@@ -60,6 +60,8 @@ const LoginButton = ({ authenticated, user, signIn }) => {
     return <Button onClick={handleLogin}>Sign in</Button>;
   }
 };
+
+export default withAirlock(LoginButton);
 ```
 
 You can also directly consume the Airlock context by importing `AirlockContext`.
