@@ -1,0 +1,40 @@
+{
+  "name": "react-airlock",
+  "version": "0.0.1",
+  "description": "React components for Laravel Airlock",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koole/laravel-airlock.git"
+  },
+  "keywords": [
+    "react",
+    "laravel",
+    "airlock"
+  ],
+  "author": "Leon Koole <leon@koole.io> (https://github.com/koole)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/koole/laravel-airlock/issues"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "homepage": "https://github.com/koole/laravel-airlock#readme",
+  "devDependencies": {
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "hoist-non-react-statics": "^3.3.2",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "tiny-invariant": "^1.1.0",
+    "@types/hoist-non-react-statics": "^3.3.1"
+  }
+}
