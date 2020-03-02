@@ -1,6 +1,6 @@
 {
   "name": "react-airlock",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "React components for Laravel Airlock",
   "main": "./lib/index.js",
   "module": "./lib-esm/index.js",
