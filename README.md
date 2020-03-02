@@ -71,9 +71,9 @@ Both the `AirlockContext` and the `withAirlock` HOC give you access to the follo
 |---------------------|-----------------------------------------------------------------------------------------------------|
 | `user` | Object your API returns with user data |
 | `authenticated` | Boolean, or null if authentication has not yet been checked |
-| `signIn` | Accepts (email, password), returns a promise. |
-| `signOut` | Returns a promise |
-| `checkAuthentication` | Returns the authentication status. If it's null, it will ask the server and update `authenticated`. |
+| `signIn()` | Accepts (email, password), returns a promise. |
+| `signOut()` | Returns a promise |
+| `checkAuthentication()` | Returns the authentication status. If it's null, it will ask the server and update `authenticated`. |
 
 # Setup
 
