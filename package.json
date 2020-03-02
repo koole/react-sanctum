@@ -2,11 +2,12 @@
   "name": "react-airlock",
   "version": "0.0.3",
   "description": "React components for Laravel Airlock",
-  "main": "./lib/index.js",
-  "module": "./lib-esm/index.js",
-  "types": "./lib/index.d.ts",
+  "main": "build/index.js",
+  "module": "build/index.es.js",
+  "jsnext:main": "build/index.es.js",
+  "types": "build/index.d.ts",
   "scripts": {
-    "build": "tsc && tsc -m es6 --outDir lib-esm",
+    "build": "rollup -c",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,18 +24,23 @@
   "bugs": {
     "url": "https://github.com/koole/react-airlock/issues"
   },
-  "files": [
-    "lib/**/*"
-  ],
   "homepage": "https://github.com/koole/react-airlock#readme",
   "devDependencies": {
-    "typescript": "^3.8.3"
+    "rollup": "^1.27.13",
+    "@rollup/plugin-json": "^4.0.2",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-peer-deps-external": "^2.2.0",
+    "rollup-plugin-typescript2": "^0.25.3",
+    "typescript": "^3.8.3",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0"
   },
   "dependencies": {
+    "@types/hoist-non-react-statics": "^3.3.1",
     "axios": "^0.19.2",
     "hoist-non-react-statics": "^3.3.2",
-    "tiny-invariant": "^1.1.0",
-    "@types/hoist-non-react-statics": "^3.3.1"
+    "tiny-invariant": "^1.1.0"
   },
   "peerDependencies": {
     "react": "^16.13.0",
