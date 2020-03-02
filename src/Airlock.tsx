@@ -69,8 +69,20 @@ class Airlock extends React.Component<Props, State> {
   }
 
   signOut() {
+    const {
+      api_url,
+      logout_route,
+    } = this.props.config;
     // TODO: Actually log out
-    this.setState({ user: null, authenticated: false });
+    return new Promise((resolve, reject) => {
+      this.setState({ user: null, authenticated: false });
+      axios
+        .post(`${api_url}/${logout_route}`)
+        .then(() => resolve())
+        .catch(error => {
+          return reject(error);
+        });
+    });
   }
 
   checkAuthentication(): Promise<null | boolean> {
