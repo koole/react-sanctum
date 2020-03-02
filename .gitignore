@@ -107,5 +107,4 @@ dist
 .vscode-test
 
 # Compiled libs
-lib
-lib-esm
+build
