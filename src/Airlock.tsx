@@ -7,8 +7,8 @@ interface Props {
   config: {
     api_url: string;
     csrf_cookie_route: string;
-    login_route: string;
-    logout_route: string;
+    signin_route: string;
+    signout_route: string;
     user_object_route: string;
   };
   checkOnInit?: boolean;
@@ -41,7 +41,7 @@ class Airlock extends React.Component<Props, State> {
     const {
       api_url,
       csrf_cookie_route,
-      login_route,
+      signin_route,
       user_object_route
     } = this.props.config;
 
@@ -50,7 +50,7 @@ class Airlock extends React.Component<Props, State> {
       axios.get(`${api_url}/${csrf_cookie_route}`).then(() => {
         // Post user credentials
         axios
-          .post(`${api_url}/${login_route}`, {
+          .post(`${api_url}/${signin_route}`, {
             email,
             password
           })
@@ -71,13 +71,13 @@ class Airlock extends React.Component<Props, State> {
   signOut() {
     const {
       api_url,
-      logout_route,
+      signout_route,
     } = this.props.config;
     // TODO: Actually log out
     return new Promise((resolve, reject) => {
       this.setState({ user: null, authenticated: false });
       axios
-        .post(`${api_url}/${logout_route}`)
+        .post(`${api_url}/${signout_route}`)
         .then(() => resolve())
         .catch(error => {
           return reject(error);

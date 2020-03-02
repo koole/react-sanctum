@@ -7,6 +7,7 @@ The react-airlock package aims to provide an easy way to authenticate your React
 ## Usage
 
 Install from NPM
+
 ```
 npm i react-airlock
 ```
@@ -30,9 +31,7 @@ const airlockConfig = {
 
 const App = () => (
   <div class="my-application">
-    <Airlock config={airlockConfig}>
-      // Your application code
-    </Airlock>
+    <Airlock config={airlockConfig}>// Your application code</Airlock>
   </div>
 );
 ```
@@ -45,7 +44,6 @@ import { Airlock } from "react-airlock";
 
 const LoginButton = ({ authenticated, user, signIn }) => {
   const handleLogin = () => {
-
     const email = "airlock@example.org";
     const password = "example";
 
@@ -70,9 +68,9 @@ Both the `AirlockContext` and the `withAirlock` HOC give you access to the follo
 | | Description |
 |---------------------|-----------------------------------------------------------------------------------------------------|
 | `user` | Object your API returns with user data |
-| `authenticated` | boolean, or null if authentication has not yet been checked |
-| `signIn` | accepts (email, password), returns a promise. |
-| `signOut` | ⚠️ Doesn't really work yet |
+| `authenticated` | Boolean, or null if authentication has not yet been checked |
+| `signIn` | Accepts (email, password), returns a promise. |
+| `signOut` | Returns a promise |
 | `checkAuthentication` | Returns the authentication status. If it's null, it will ask the server and update `authenticated`. |
 
 # Setup
@@ -87,9 +85,9 @@ const airlockConfig = {
   // The URL airlock uses for the csrf cookie
   csrf_cookie_route: "airlock/csrf-cookie",
   // Email and password get POSTed to here
-  login_route: "login",
-  // This is not even used yet
-  logout_route: "logout",
+  signin_route: "login",
+  // A POST request is sent to this route to sign the user out
+  signout_route: "logout",
   // Used for checking if the user is signed in (so this should be protected)
   // The returned object will be avaiable as `user` in the React components.
   user_object_route: "api/user"
