@@ -31,7 +31,9 @@ const airlockConfig = {
 
 const App = () => (
   <div class="my-application">
-    <Airlock config={airlockConfig}>// Your application code</Airlock>
+    <Airlock config={airlockConfig}>
+      // Your application code
+    </Airlock>
   </div>
 );
 ```
