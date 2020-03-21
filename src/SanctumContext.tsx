@@ -8,6 +8,6 @@ export interface ContextProps {
   checkAuthentication: () => Promise<null | boolean>;
 }
 
-const AirlockContext = React.createContext<Partial<ContextProps>>({});
+const SanctumContext = React.createContext<Partial<ContextProps>>({});
 
-export default AirlockContext;
+export default SanctumContext;

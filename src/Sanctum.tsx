@@ -1,6 +1,6 @@
 import * as React from "react";
 import axios from "axios";
-import AirlockContext from "./AirlockContext";
+import SanctumContext from "./SanctumContext";
 axios.defaults.withCredentials = true;
 
 interface Props {
@@ -19,7 +19,7 @@ interface State {
   authenticated: null | boolean;
 }
 
-class Airlock extends React.Component<Props, State> {
+class Sanctum extends React.Component<Props, State> {
   static defaultProps = {
     checkOnInit: true
   };
@@ -117,7 +117,7 @@ class Airlock extends React.Component<Props, State> {
 
   render() {
     return (
-      <AirlockContext.Provider
+      <SanctumContext.Provider
         children={this.props.children || null}
         value={{
           user: this.state.user,
@@ -131,4 +131,4 @@ class Airlock extends React.Component<Props, State> {
   }
 }
 
-export default Airlock;
+export default Sanctum;

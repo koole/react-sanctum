@@ -2,19 +2,19 @@ import * as React from "react";
 import hoistStatics from "hoist-non-react-statics";
 import invariant from "tiny-invariant";
 
-import AirlockContext from "./AirlockContext";
+import SanctumContext from "./SanctumContext";
 
-const withAirlock = Component => {
+const withSanctum = Component => {
   const C = props => {
     const displayName = `withRouter(${Component.displayName || Component.name})`;
     const { wrappedComponentRef, ...remainingProps } = props;
 
     return (
-      <AirlockContext.Consumer>
+      <SanctumContext.Consumer>
         {context => {
           invariant(
             context,
-            `You should not use <${displayName} /> outside a <Airlock>`
+            `You should not use <${displayName} /> outside a <Sanctum>`
           );
           return (
             <Component
@@ -24,11 +24,11 @@ const withAirlock = Component => {
             />
           );
         }}
-      </AirlockContext.Consumer>
+      </SanctumContext.Consumer>
     );
   };
   return hoistStatics(C, Component);
 };
 
-export default withAirlock;
+export default withSanctum;
 

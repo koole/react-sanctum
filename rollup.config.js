@@ -12,7 +12,7 @@ export default [
   //   {
   //     input: "src/index.ts",
   //     output: {
-  //       name: "react-airlock",
+  //       name: "react-sanctum",
   //       file: pkg.browser,
   //       format: "umd"
   //     },

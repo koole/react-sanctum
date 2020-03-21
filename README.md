@@ -1,29 +1,29 @@
-# react-airlock - React components for Laravel Airlock
+# react-sanctum - React components for Laravel Sanctum
 
 ⚠️ This is _very_ much a work in progress.
 
-The react-airlock package aims to provide an easy way to authenticate your React application with Laravel Airlock.
+The react-sanctum package aims to provide an easy way to authenticate your React application with Laravel Sanctum.
 
 ## Usage
 
 Install from NPM
 
 ```
-npm i react-airlock
+npm i react-sanctum
 ```
 
-Wrap your application in an `<Airlock>` component
+Wrap your application in an `<Sanctum>` component
 
 Example:
 
 ```js
 import React from "react";
 
-import { Airlock } from "react-airlock";
+import { Sanctum } from "react-sanctum";
 
-const airlockConfig = {
+const sanctumConfig = {
   api_url: "http://foobar.test",
-  csrf_cookie_route: "airlock/csrf-cookie",
+  csrf_cookie_route: "sanctum/csrf-cookie",
   login_route: "login",
   logout_route: "logout",
   user_object_route: "api/user"
@@ -31,22 +31,22 @@ const airlockConfig = {
 
 const App = () => (
   <div class="my-application">
-    <Airlock config={airlockConfig}>
+    <Sanctum config={sanctumConfig}>
       // Your application code
-    </Airlock>
+    </Sanctum>
   </div>
 );
 ```
 
-You can then use the `withAirlock` higher-order component to get authentication status, user data and airlock related methods in any component.
+You can then use the `withSanctum` higher-order component to get authentication status, user data and sanctum related methods in any component.
 
 ```js
 import React from "react";
-import { Airlock } from "react-airlock";
+import { Sanctum } from "react-sanctum";
 
 const LoginButton = ({ authenticated, user, signIn }) => {
   const handleLogin = () => {
-    const email = "airlock@example.org";
+    const email = "sanctum@example.org";
     const password = "example";
 
     signIn(email, password)
@@ -61,12 +61,12 @@ const LoginButton = ({ authenticated, user, signIn }) => {
   }
 };
 
-export default withAirlock(LoginButton);
+export default withSanctum(LoginButton);
 ```
 
-You can also directly consume the Airlock context by importing `AirlockContext`.
+You can also directly consume the Sanctum context by importing `SanctumContext`.
 
-Both the `AirlockContext` and the `withAirlock` HOC give you access to the following data and methods:
+Both the `SanctumContext` and the `withSanctum` HOC give you access to the following data and methods:
 | | Description |
 |---------------------|-----------------------------------------------------------------------------------------------------|
 | `user` | Object your API returns with user data |
@@ -80,12 +80,12 @@ Both the `AirlockContext` and the `withAirlock` HOC give you access to the follo
 All URLS in the config are required. These need to be created in your Laravel app.
 
 ```js
-const airlockConfig = {
+const sanctumConfig = {
   // Your applications URL
   api_url: "http://foobar.test",
   // The following settings are URLS that need to be created in your Laravel application
-  // The URL airlock uses for the csrf cookie
-  csrf_cookie_route: "airlock/csrf-cookie",
+  // The URL sanctum uses for the csrf cookie
+  csrf_cookie_route: "sanctum/csrf-cookie",
   // Email and password get POSTed to here
   signin_route: "login",
   // A POST request is sent to this route to sign the user out
@@ -96,8 +96,8 @@ const airlockConfig = {
 };
 ```
 
-react-airlock automatically checks if the user is signed in when the the `<Airlock>` component gets mounted. If you don't want this, and want to manually use the `checkAuthentication` function later, set `checkOnInit` to `false` like so:
+react-sanctum automatically checks if the user is signed in when the the `<Sanctum>` component gets mounted. If you don't want this, and want to manually use the `checkAuthentication` function later, set `checkOnInit` to `false` like so:
 
 ```js
-<Airlock config={airlockConfig} checkOnInit={true}>
+<Sanctum config={sanctumConfig} checkOnInit={true}>
 ```

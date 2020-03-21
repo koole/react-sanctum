@@ -1,6 +1,6 @@
-import Airlock from "./Airlock";
-import withAirlock from "./withAirlock";
-import AirlockContext from "./AirlockContext";
-import WithAirlockProps from "./WithAirlockProps";
+import Sanctum from "./Sanctum";
+import withSanctum from "./withSanctum";
+import SanctumContext from "./SanctumContext";
+import WithSanctumProps from "./WithSanctumProps";
 
-export { Airlock, withAirlock, AirlockContext, WithAirlockProps };
+export { Sanctum, withSanctum, SanctumContext, WithSanctumProps };
