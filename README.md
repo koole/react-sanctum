@@ -1,9 +1,12 @@
 # react-sanctum - React components for Laravel Sanctum
 
-⚠️ This is _very_ much a work in progress.
+[![npm version](https://badge.fury.io/js/react-sanctum.svg)](https://www.npmjs.com/package/react-sanctum)
 
 The react-sanctum package aims to provide an easy way to authenticate your React
 application with Laravel Sanctum.
+
+⚠️ This is a work in progress. While it works properly and we use it internally, you can
+expect some breaking changes.
 
 ## Usage
 
