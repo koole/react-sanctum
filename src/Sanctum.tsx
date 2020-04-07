@@ -34,6 +34,7 @@ class Sanctum extends React.Component<Props, State> {
 
     this.signIn = this.signIn.bind(this);
     this.signOut = this.signOut.bind(this);
+    this.setUser = this.setUser.bind(this);
     this.checkAuthentication = this.checkAuthentication.bind(this);
   }
 
@@ -67,13 +68,11 @@ class Sanctum extends React.Component<Props, State> {
       });
     });
   }
-
   signOut() {
     const {
       api_url,
       signout_route,
     } = this.props.config;
-    // TODO: Actually log out
     return new Promise((resolve, reject) => {
       this.setState({ user: null, authenticated: false });
       axios
@@ -84,6 +83,11 @@ class Sanctum extends React.Component<Props, State> {
         });
     });
   }
+
+  setUser(user: object, authenticated: boolean = true) {
+    this.setState({ user, authenticated });
+  }
+
 
   checkAuthentication(): Promise<null | boolean> {
     const { api_url, user_object_route } = this.props.config;
@@ -124,6 +128,7 @@ class Sanctum extends React.Component<Props, State> {
           authenticated: this.state.authenticated,
           signIn: this.signIn,
           signOut: this.signOut,
+          setUser: this.setUser,
           checkAuthentication: this.checkAuthentication
         }}
       />

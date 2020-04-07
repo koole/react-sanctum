@@ -2,7 +2,8 @@
 
 ⚠️ This is _very_ much a work in progress.
 
-The react-sanctum package aims to provide an easy way to authenticate your React application with Laravel Sanctum.
+The react-sanctum package aims to provide an easy way to authenticate your React
+application with Laravel Sanctum.
 
 ## Usage
 
@@ -26,19 +27,18 @@ const sanctumConfig = {
   csrf_cookie_route: "sanctum/csrf-cookie",
   login_route: "login",
   logout_route: "logout",
-  user_object_route: "api/user"
+  user_object_route: "user",
 };
 
 const App = () => (
   <div class="my-application">
-    <Sanctum config={sanctumConfig}>
-      // Your application code
-    </Sanctum>
+    <Sanctum config={sanctumConfig}>// Your application code</Sanctum>
   </div>
 );
 ```
 
-You can then use the `withSanctum` higher-order component to get authentication status, user data and sanctum related methods in any component.
+You can then use the `withSanctum` higher-order component to get authentication status,
+user data and sanctum related methods in any component.
 
 ```js
 import React from "react";
@@ -66,13 +66,15 @@ export default withSanctum(LoginButton);
 
 You can also directly consume the Sanctum context by importing `SanctumContext`.
 
-Both the `SanctumContext` and the `withSanctum` HOC give you access to the following data and methods:
+Both the `SanctumContext` and the `withSanctum` HOC give you access to the following
+data and methods:
 | | Description |
-|---------------------|-----------------------------------------------------------------------------------------------------|
+|-|------------------------------------------------------------------------------------|
 | `user` | Object your API returns with user data |
 | `authenticated` | Boolean, or null if authentication has not yet been checked |
-| `signIn()` | Accepts (email, password), returns a promise. |
+| `signIn()` | Accepts `(email, password)`, returns a promise. |
 | `signOut()` | Returns a promise |
+| `setUser()` | Accepts `(user, authenticated?)`, allows you to manually set the user object and optionally its authentication status (boolean). |
 | `checkAuthentication()` | Returns the authentication status. If it's null, it will ask the server and update `authenticated`. |
 
 # Setup
@@ -92,12 +94,33 @@ const sanctumConfig = {
   signout_route: "logout",
   // Used for checking if the user is signed in (so this should be protected)
   // The returned object will be avaiable as `user` in the React components.
-  user_object_route: "api/user"
+  user_object_route: "api/user",
 };
 ```
 
-react-sanctum automatically checks if the user is signed in when the the `<Sanctum>` component gets mounted. If you don't want this, and want to manually use the `checkAuthentication` function later, set `checkOnInit` to `false` like so:
+react-sanctum automatically checks if the user is signed in when the the `<Sanctum>`
+component gets mounted. If you don't want this, and want to manually use the
+`checkAuthentication` function later, set `checkOnInit` to `false` like so:
 
 ```js
 <Sanctum config={sanctumConfig} checkOnInit={true}>
 ```
+
+# Handling registration
+
+Methods for signin and signout are provided by this library. Registration is not
+included as there seem to be many different ways people handle registration flows.
+
+If you want to sign in your user after registration, there's an easy way to do this.
+First, make sure the endpoint you post the registration data to signs in the
+user (`Auth::guard()->login(...)`) and have it return the user object to the front-end.
+
+In your front-end you can then pass this user object into the `setUser()` funcion,
+et voilà, your new user has been signed in.
+
+# Axios
+
+Quick tip for people using axios: react-sanctum uses Axios for making requests to your
+server. If your project is also using axios, make sure to set
+`axios.defaults.withCredentials = true;`. That way axios will authenticate your requests
+to the server properly.

@@ -5,6 +5,7 @@ export interface ContextProps {
   authenticated: null | boolean;
   signIn: (email: string, password: string) => Promise<unknown>;
   signOut: () => void;
+  setUser: (user: object, authenticated?: boolean) => void;
   checkAuthentication: () => Promise<null | boolean>;
 }
 
