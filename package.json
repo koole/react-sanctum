@@ -1,6 +1,6 @@
 {
   "name": "react-sanctum",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "React components for Laravel Sanctum",
   "main": "build/index.cjs.ts",
   "module": "build/index.esm.js",
