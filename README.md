@@ -28,8 +28,8 @@ import { Sanctum } from "react-sanctum";
 const sanctumConfig = {
   api_url: "http://foobar.test",
   csrf_cookie_route: "sanctum/csrf-cookie",
-  login_route: "login",
-  logout_route: "logout",
+  signin_route: "login",
+  signin_route: "logout",
   user_object_route: "user",
 };
 
