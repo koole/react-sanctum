@@ -35,7 +35,7 @@ const sanctumConfig = {
 
 const App = () => (
   <div class="my-application">
-    <Sanctum config={sanctumConfig}>// Your application code</Sanctum>
+    <Sanctum config={sanctumConfig}>/* Your application code */</Sanctum>
   </div>
 );
 ```
