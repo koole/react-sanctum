@@ -22,7 +22,7 @@ interface State {
 
 class Sanctum extends React.Component<Props, State> {
   static defaultProps = {
-    checkOnInit: true
+    checkOnInit: true,
   };
 
   constructor(props: Props) {
@@ -30,7 +30,7 @@ class Sanctum extends React.Component<Props, State> {
 
     this.state = {
       user: null,
-      authenticated: null
+      authenticated: null,
     };
 
     this.signIn = this.signIn.bind(this);
@@ -44,45 +44,36 @@ class Sanctum extends React.Component<Props, State> {
       api_url,
       csrf_cookie_route,
       signin_route,
-      user_object_route
+      user_object_route,
     } = this.props.config;
 
-    return new Promise((resolve, reject) => {
-      // Get CSRF cookie
-      axios.get(`${api_url}/${csrf_cookie_route}`).then(() => {
-        // Post user credentials
-        axios
-          .post(`${api_url}/${signin_route}`, {
-            email,
-            password
-          })
-          .then(() => {
-            // When correct. get the user data
-            axios.get(`${api_url}/${user_object_route}`).then(({ data }) => {
-              this.setState({ user: data, authenticated: true });
-              return resolve();
-            });
-          })
-          .catch(error => {
-            return reject(error);
-          });
-      });
+    return new Promise(async (resolve, reject) => {
+      try {
+        // Get CSRF cookie.
+        await axios.get(`${api_url}/${csrf_cookie_route}`);
+        // Sign in.
+        await axios.post(`${api_url}/${signin_route}`, { email, password });
+        // When correct, get the user data.
+        const { data } = await axios.get(`${api_url}/${user_object_route}`);
+        this.setState({ user: data, authenticated: true });
+        return resolve(data);
+      } catch (error) {
+        return reject(error);
+      }
     });
   }
 
   signOut() {
-    const {
-      api_url,
-      signout_route,
-    } = this.props.config;
-    return new Promise((resolve, reject) => {
-      this.setState({ user: null, authenticated: false });
-      axios
-        .post(`${api_url}/${signout_route}`)
-        .then(() => resolve())
-        .catch(error => {
-          return reject(error);
-        });
+    const { api_url, signout_route } = this.props.config;
+    return new Promise(async (resolve, reject) => {
+      try {
+        await axios.post(`${api_url}/${signout_route}`);
+        // Only sign out after the server has successfully responded.
+        this.setState({ user: null, authenticated: false });
+        resolve();
+      } catch (error) {
+        return reject(error);
+      }
     });
   }
 
@@ -90,26 +81,27 @@ class Sanctum extends React.Component<Props, State> {
     this.setState({ user, authenticated });
   }
 
-
   checkAuthentication(): Promise<null | boolean> {
     const { api_url, user_object_route } = this.props.config;
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       if (this.state.authenticated === null) {
-        axios
-          .get(`${api_url}/${user_object_route}`)
-          .then(({ data }) => {
-            this.setState({ user: data, authenticated: true });
-            return resolve(true);
-          })
-          .catch(error => {
-            if (error.response && error.response.status === 401) {
-              this.setState({ user: null, authenticated: false });
-              return resolve(false);
-            } else {
-              return reject(error);
-            }
-          });
+        // The status is null if we haven't checked it, so we have to make a request.
+        try {
+          const { data } = await axios.get(`${api_url}/${user_object_route}`);
+          this.setState({ user: data, authenticated: true });
+          return resolve(true);
+        } catch (error) {
+          if (error.response && error.response.status === 401) {
+            // If there's a 401 error the user is not signed in.
+            this.setState({ user: null, authenticated: false });
+            return resolve(false);
+          } else {
+            // If there's any other error, something has gone wrong.
+            return reject(error);
+          }
+        }
       } else {
+        // If it has been checked with the server before, we can just return the state.
         return resolve(this.state.authenticated);
       }
     });
@@ -131,7 +123,7 @@ class Sanctum extends React.Component<Props, State> {
           signIn: this.signIn,
           signOut: this.signOut,
           setUser: this.setUser,
-          checkAuthentication: this.checkAuthentication
+          checkAuthentication: this.checkAuthentication,
         }}
       />
     );

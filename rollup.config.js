@@ -36,7 +36,7 @@ export default [
   // `file` and `format` for each target)
   {
     input: "src/index.ts",
-    external: ["react", "axios", "hoist-non-react-statics", "tiny-invariant"],
+    external: ["react", "axios", "tiny-invariant"],
     plugins: [json(), typescript()],
     output: [
       { file: pkg.main, format: "cjs", sourcemap: true },
