@@ -1,34 +1,28 @@
 import * as React from "react";
-import hoistStatics from "hoist-non-react-statics";
 import invariant from "tiny-invariant";
 
 import SanctumContext from "./SanctumContext";
 
-const withSanctum = Component => {
-  const C = props => {
-    const displayName = `withRouter(${Component.displayName || Component.name})`;
-    const { wrappedComponentRef, ...remainingProps } = props;
+const withSanctum = (Component) => {
+  const displayName = `withSanctum(${Component.displayName || Component.name})`;
 
+  const C = (props) => {
     return (
       <SanctumContext.Consumer>
-        {context => {
+        {(context) => {
           invariant(
             context,
             `You should not use <${displayName} /> outside a <Sanctum>`
           );
-          return (
-            <Component
-              {...remainingProps}
-              {...context}
-              ref={wrappedComponentRef}
-            />
-          );
+          return <Component {...props} {...context} />;
         }}
       </SanctumContext.Consumer>
     );
   };
-  return hoistStatics(C, Component);
+
+  C.displayName = displayName;
+
+  return C;
 };
 
 export default withSanctum;
-
