@@ -1,11 +1,12 @@
 import * as React from "react";
 import invariant from "tiny-invariant";
 import SanctumContext from "./SanctumContext";
+import WithSanctumProps from "./WithSanctumProps";
 
-const withSanctum = (Component) => {
+const withSanctum = (Component: React.ComponentType<WithSanctumProps<any>>) => {
   const displayName = `withSanctum(${Component.displayName || Component.name})`;
-
-  const C = (props) => {
+ 
+  const C = (props: WithSanctumProps<any>) => {
     return (
       <SanctumContext.Consumer>
         {(context) => {

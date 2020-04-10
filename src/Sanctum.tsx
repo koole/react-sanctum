@@ -39,7 +39,7 @@ class Sanctum extends React.Component<Props, State> {
     this.checkAuthentication = this.checkAuthentication.bind(this);
   }
 
-  signIn(email: string, password: string) {
+  signIn(email: string, password: string): Promise<{}> {
     const {
       api_url,
       csrf_cookie_route,
@@ -81,7 +81,7 @@ class Sanctum extends React.Component<Props, State> {
     this.setState({ user, authenticated });
   }
 
-  checkAuthentication(): Promise<null | boolean> {
+  checkAuthentication(): Promise<boolean> {
     const { api_url, user_object_route } = this.props.config;
     return new Promise(async (resolve, reject) => {
       if (this.state.authenticated === null) {
