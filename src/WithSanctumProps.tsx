@@ -1,3 +1,5 @@
+import { Ref, ComponentType } from "react";
+
 export default interface WithSanctumProps<UserObj> {
   user: null | UserObj;
   authenticated: null | boolean;
@@ -5,4 +7,5 @@ export default interface WithSanctumProps<UserObj> {
   signOut: () => void;
   setUser: (user: object, authenticated?: boolean) => void;
   checkAuthentication: () => Promise<boolean>;
+  ref: Ref<ComponentType>
 }
