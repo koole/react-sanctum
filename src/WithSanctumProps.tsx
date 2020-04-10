@@ -1,8 +1,5 @@
-export default interface WithSanctumProps<UserObj> {
+import { ContextProps } from "./SanctumContext";
+
+export default interface WithSanctumProps<UserObj> extends ContextProps {
   user: null | UserObj;
-  authenticated: null | boolean;
-  signIn: (email: string, password: string) => Promise<{}>;
-  signOut: () => void;
-  setUser: (user: object, authenticated?: boolean) => void;
-  checkAuthentication: () => Promise<boolean>;
 }
