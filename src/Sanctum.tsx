@@ -1,6 +1,7 @@
 import * as React from "react";
 import axios from "axios";
 import SanctumContext from "./SanctumContext";
+
 axios.defaults.withCredentials = true;
 
 interface Props {
@@ -68,6 +69,7 @@ class Sanctum extends React.Component<Props, State> {
       });
     });
   }
+
   signOut() {
     const {
       api_url,

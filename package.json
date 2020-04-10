@@ -26,6 +26,7 @@
   "homepage": "https://github.com/koole/react-sanctum#readme",
   "devDependencies": {
     "@rollup/plugin-json": "^4.0.2",
+    "@types/react": "^16.9.34",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "rollup": "^1.27.13",
@@ -37,9 +38,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "@types/hoist-non-react-statics": "^3.3.1",
     "axios": "^0.19.2",
-    "hoist-non-react-statics": "^3.3.2",
     "tiny-invariant": "^1.1.0"
   },
   "peerDependencies": {

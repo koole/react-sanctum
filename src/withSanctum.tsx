@@ -1,6 +1,5 @@
 import * as React from "react";
 import invariant from "tiny-invariant";
-
 import SanctumContext from "./SanctumContext";
 
 const withSanctum = (Component) => {
