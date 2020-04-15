@@ -1,5 +1,6 @@
 import * as React from "react";
 import invariant from "tiny-invariant";
+
 import SanctumContext from "./SanctumContext";
 import WithSanctumProps from "./WithSanctumProps";
 
