@@ -51,8 +51,9 @@ const LoginButton = ({ authenticated, user, signIn }) => {
   const handleLogin = () => {
     const email = "sanctum@example.org";
     const password = "example";
+    const remember = true;
 
-    signIn(email, password)
+    signIn(email, password, remember)
       .then(() => window.alert("Signed in!"))
       .catch(() => window.alert("Incorrect email or password"));
   };
@@ -75,7 +76,7 @@ data and methods:
 |-|------------------------------------------------------------------------------------|
 | `user` | Object your API returns with user data |
 | `authenticated` | Boolean, or null if authentication has not yet been checked |
-| `signIn()` | Accepts `(email, password)`, returns a promise, resolves with the user data. |
+| `signIn()` | Accepts `(email, password, remember?)`, returns a promise, resolves with the user data. |
 | `signOut()` | Returns a promise |
 | `setUser()` | Accepts `(user, authenticated?)`, allows you to manually set the user object and optionally its authentication status (boolean). |
 | `checkAuthentication()` | Returns the authentication status. If it's null, it will ask the server and update `authenticated`. |
