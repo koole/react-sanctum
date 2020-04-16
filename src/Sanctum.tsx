@@ -39,7 +39,7 @@ class Sanctum extends React.Component<Props, State> {
     this.checkAuthentication = this.checkAuthentication.bind(this);
   }
 
-  signIn(email: string, password: string): Promise<{}> {
+  signIn(email: string, password: string, remember: boolean = false): Promise<{}> {
     const {
       api_url,
       csrf_cookie_route,
@@ -52,7 +52,7 @@ class Sanctum extends React.Component<Props, State> {
         // Get CSRF cookie.
         await axios.get(`${api_url}/${csrf_cookie_route}`);
         // Sign in.
-        await axios.post(`${api_url}/${signin_route}`, { email, password });
+        await axios.post(`${api_url}/${signin_route}`, { email, password, remember: remember ? remember : null });
         // When correct, get the user data.
         const { data } = await axios.get(`${api_url}/${user_object_route}`);
         this.setState({ user: data, authenticated: true });
