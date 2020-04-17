@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.0.9] - 2020-4-17
+
+### Added
+- Optional "Remember me" option for signIn
+
 ## [0.0.8] - 2020-4-15
 
 ### Changed
