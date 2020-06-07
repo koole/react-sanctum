@@ -5,9 +5,6 @@
 The react-sanctum package aims to provide an easy way to authenticate your React
 application with Laravel Sanctum.
 
-⚠️ This is a work in progress. While it works properly and we use it internally, you can
-expect some breaking changes.
-
 ## Usage
 
 Install from NPM
@@ -92,11 +89,11 @@ const sanctumConfig = {
   // The following settings are URLS that need to be created in your Laravel application
   // The URL sanctum uses for the csrf cookie
   csrf_cookie_route: "sanctum/csrf-cookie",
-  // Email and password get POSTed to here
-  signin_route: "login",
+  // {email: string, password: string, remember: true | null} get POSTed to here
+  signin_route: "api/login",
   // A POST request is sent to this route to sign the user out
-  signout_route: "logout",
-  // Used for checking if the user is signed in (so this should be protected)
+  signout_route: "api/logout",
+  // Used (GET) for checking if the user is signed in (so this should be protected)
   // The returned object will be avaiable as `user` in the React components.
   user_object_route: "api/user",
 };
@@ -121,6 +118,20 @@ user (`Auth::guard()->login(...)`) and have it return the user object to the fro
 
 In your front-end you can then pass this user object into the `setUser()` funcion,
 et voilà, your new user has been signed in.
+
+For example:
+```js
+axios
+  .post(`${API_URL}/register`, data)
+  .then(function (response) {
+    const user = response.data;
+    setUser(user); // The react-sanctum setUser function
+    ...
+  })
+  .catch(function (error) {
+    ...
+  });
+```
 
 # Axios
 
