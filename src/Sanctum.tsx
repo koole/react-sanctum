@@ -52,7 +52,7 @@ class Sanctum extends React.Component<Props, State> {
         // Get CSRF cookie.
         await axios.get(`${api_url}/${csrf_cookie_route}`);
         // Sign in.
-        await axios.post(`${api_url}/${signin_route}`, { email, password, remember: remember ? remember : null });
+        await axios.post(`${api_url}/${signin_route}`, { email, password, remember: remember ? true : null });
         // When correct, get the user data.
         const { data } = await axios.get(`${api_url}/${user_object_route}`);
         this.setState({ user: data, authenticated: true });
