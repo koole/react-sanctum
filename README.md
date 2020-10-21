@@ -42,7 +42,7 @@ user data and sanctum related methods in any component.
 
 ```js
 import React from "react";
-import { Sanctum } from "react-sanctum";
+import { withSanctum } from "react-sanctum";
 
 const LoginButton = ({ authenticated, user, signIn }) => {
   const handleLogin = () => {
