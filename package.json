@@ -1,6 +1,6 @@
 {
   "name": "react-sanctum",
-  "version": "0.0.9",
+  "version": "1.0.0",
   "description": "React components for Laravel Sanctum",
   "main": "build/index.cjs.ts",
   "module": "build/index.esm.js",
@@ -26,13 +26,12 @@
   "homepage": "https://github.com/koole/react-sanctum#readme",
   "devDependencies": {
     "@rollup/plugin-json": "^4.1.0",
-    "@types/react": "^16.9.35",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "rollup": "^2.14.0",
-    "rollup-plugin-peer-deps-external": "^2.2.0",
-    "rollup-plugin-typescript2": "^0.27.1",
-    "typescript": "^3.9.5"
+    "@types/react": "^16.9.53",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "rollup": "^2.32.1",
+    "rollup-plugin-typescript2": "^0.27.3",
+    "typescript": "^3.9.7"
   },
   "dependencies": {
     "axios": "^0.19.2",

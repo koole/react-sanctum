@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.0.0] - 2020-4-17
+- Version bump only, no code changes
+
 ## [0.0.9] - 2020-4-17
 
 ### Added
