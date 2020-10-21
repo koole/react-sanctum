@@ -5,7 +5,7 @@ import SanctumContext from "./SanctumContext";
 
 const withSanctum = (Component: React.ComponentType<any>) => {
   const displayName = `withSanctum(${Component.displayName || Component.name})`;
- 
+
   const C = (props: any) => {
     return (
       <SanctumContext.Consumer>

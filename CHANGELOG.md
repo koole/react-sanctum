@@ -1,7 +1,15 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## In Progress
+
+### Added
+- useUser() hook
+- useAuthenticated() hook
+
 ## [1.0.0] - 2020-4-17
+
+### Changed
 - Version bump only, no code changes
 
 ## [0.0.9] - 2020-4-17
