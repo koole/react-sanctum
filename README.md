@@ -31,7 +31,7 @@ const sanctumConfig = {
 };
 
 const App = () => (
-  <div class="my-application">
+  <div className="my-application">
     <Sanctum config={sanctumConfig}>/* Your application code */</Sanctum>
   </div>
 );
@@ -58,7 +58,7 @@ const LoginButton = ({ authenticated, user, signIn }) => {
   if (authenticated === true) {
     return <h1>Welcome, {user.name}</h1>;
   } else {
-    return <Button onClick={handleLogin}>Sign in</Button>;
+    return <button onClick={handleLogin}>Sign in</button>;
   }
 };
 
