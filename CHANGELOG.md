@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.0.1] - 2020-4-17
+
+### Changed
+- Add React 17 to peerdependencies
+
 ## [1.0.0] - 2020-4-17
 
 ### Changed

@@ -1,6 +1,6 @@
 {
   "name": "react-sanctum",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React components for Laravel Sanctum",
   "main": "build/index.cjs.ts",
   "module": "build/index.esm.js",
@@ -34,11 +34,12 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "tiny-invariant": "^1.1.0"
   },
   "peerDependencies": {
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0"
+    "react": "^16.13.0 || ^17.0.0",
+    "react-dom": "^16.13.0 || ^17.0.0"
   },
   "files": [
     "build"
