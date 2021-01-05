@@ -1,5 +1,5 @@
+import axios, { AxiosInstance } from "axios";
 import * as React from "react";
-import axios from "axios";
 import SanctumContext from "./SanctumContext";
 
 axios.defaults.withCredentials = true;
@@ -7,6 +7,7 @@ axios.defaults.withCredentials = true;
 interface Props {
   config: {
     api_url: string;
+    axios_instance?: AxiosInstance;
     csrf_cookie_route: string;
     signin_route: string;
     signout_route: string;
@@ -25,6 +26,8 @@ class Sanctum extends React.Component<Props, State> {
     checkOnInit: true,
   };
 
+  axios: AxiosInstance;
+
   constructor(props: Props) {
     super(props);
 
@@ -33,6 +36,7 @@ class Sanctum extends React.Component<Props, State> {
       authenticated: null,
     };
 
+    this.axios = props.config.axios_instance || axios.create();
     this.signIn = this.signIn.bind(this);
     this.signOut = this.signOut.bind(this);
     this.setUser = this.setUser.bind(this);
@@ -54,15 +58,17 @@ class Sanctum extends React.Component<Props, State> {
     return new Promise(async (resolve, reject) => {
       try {
         // Get CSRF cookie.
-        await axios.get(`${api_url}/${csrf_cookie_route}`);
+        await this.axios.get(`${api_url}/${csrf_cookie_route}`);
         // Sign in.
-        await axios.post(`${api_url}/${signin_route}`, {
+        await this.axios.post(`${api_url}/${signin_route}`, {
           email,
           password,
           remember: remember ? true : null,
         });
         // When correct, get the user data.
-        const { data } = await axios.get(`${api_url}/${user_object_route}`);
+        const { data } = await this.axios.get(
+          `${api_url}/${user_object_route}`
+        );
         this.setState({ user: data, authenticated: true });
         return resolve(data);
       } catch (error) {
@@ -75,10 +81,10 @@ class Sanctum extends React.Component<Props, State> {
     const { api_url, signout_route } = this.props.config;
     return new Promise(async (resolve, reject) => {
       try {
-        await axios.post(`${api_url}/${signout_route}`);
+        await this.axios.post(`${api_url}/${signout_route}`);
         // Only sign out after the server has successfully responded.
         this.setState({ user: null, authenticated: false });
-        resolve();
+        resolve(undefined);
       } catch (error) {
         return reject(error);
       }
@@ -95,7 +101,9 @@ class Sanctum extends React.Component<Props, State> {
       if (this.state.authenticated === null) {
         // The status is null if we haven't checked it, so we have to make a request.
         try {
-          const { data } = await axios.get(`${api_url}/${user_object_route}`);
+          const { data } = await this.axios.get(
+            `${api_url}/${user_object_route}`
+          );
           this.setState({ user: data, authenticated: true });
           return resolve(true);
         } catch (error) {

@@ -86,6 +86,8 @@ All URLS in the config are required. These need to be created in your Laravel ap
 const sanctumConfig = {
   // Your applications URL
   api_url: "http://foobar.test",
+  // An axios instance to be used by react-sanctum (optionnal)
+  axios_instance: axios.create(),
   // The following settings are URLS that need to be created in your Laravel application
   // The URL sanctum uses for the csrf cookie
   csrf_cookie_route: "sanctum/csrf-cookie",
@@ -120,6 +122,7 @@ In your front-end you can then pass this user object into the `setUser()` funcio
 et voilà, your new user has been signed in.
 
 For example:
+
 ```js
 axios
   .post(`${API_URL}/register`, data)
@@ -139,3 +142,6 @@ Quick tip for people using axios: react-sanctum uses Axios for making requests t
 server. If your project is also using axios, make sure to set
 `axios.defaults.withCredentials = true;`. That way axios will authenticate your requests
 to the server properly.
+
+You can also use your own axios instance by providing an AxiosInstance to axios_instance
+in config object.
