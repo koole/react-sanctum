@@ -1,6 +1,6 @@
 {
   "name": "react-sanctum",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "React components for Laravel Sanctum",
   "main": "build/index.cjs.ts",
   "module": "build/index.esm.js",
@@ -12,19 +12,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/koole/react-sanctum.git"
+    "url": "git+https://github.com/pharmarin/react-sanctum.git"
   },
   "keywords": [
     "react",
     "laravel",
     "sanctum"
   ],
-  "author": "Leon Koole <leon@koole.io> (https://github.com/koole)",
+  "author": "Marin ROUX",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/koole/react-sanctum/issues"
+    "url": "https://github.com/pharmarin/react-sanctum/issues"
   },
-  "homepage": "https://github.com/koole/react-sanctum#readme",
+  "homepage": "https://github.com/pharmarin/react-sanctum#readme",
   "devDependencies": {
     "@rollup/plugin-json": "^4.1.0",
     "@types/react": "^17.0.0",
