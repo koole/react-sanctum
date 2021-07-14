@@ -31,7 +31,8 @@
     "react-dom": "^16.14.0",
     "rollup": "^2.32.1",
     "rollup-plugin-typescript2": "^0.27.3",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "js-cookie": "^2.2.1"
   },
   "dependencies": {
     "axios": "^0.21.1",
