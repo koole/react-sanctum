@@ -1,8 +1,23 @@
 import * as React from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 import SanctumContext from "./SanctumContext";
 
 axios.defaults.withCredentials = true;
+
+axios.interceptors.request.use(async (request) => {
+  try {
+    const csrf = Cookies.get('XSRF-TOKEN');
+
+    if (csrf) {
+        request.headers.common['X-XSRF-TOKEN'] = csrf;
+    }
+
+    return request;
+  } catch (err) {
+    throw new Error(`axios# Problem with request during pre-flight phase: ${err}.`);
+  }
+});
 
 interface Props {
   config: {
