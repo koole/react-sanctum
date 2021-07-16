@@ -1,6 +1,6 @@
 {
   "name": "react-sanctum",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "React components for Laravel Sanctum",
   "main": "build/index.cjs.ts",
   "module": "build/index.esm.js",
@@ -26,7 +26,7 @@
   "homepage": "https://github.com/koole/react-sanctum#readme",
   "devDependencies": {
     "@rollup/plugin-json": "^4.1.0",
-    "@types/react": "^16.9.53",
+    "@types/react": "^16.14.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "rollup": "^2.32.1",

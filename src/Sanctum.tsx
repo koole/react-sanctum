@@ -1,16 +1,17 @@
 import * as React from "react";
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import SanctumContext from "./SanctumContext";
 
 axios.defaults.withCredentials = true;
 
 interface Props {
   config: {
-    api_url: string;
-    csrf_cookie_route: string;
-    signin_route: string;
-    signout_route: string;
-    user_object_route: string;
+    apiUrl: string;
+    csrfCookieRoute: string;
+    signInRoute: string;
+    signOutRoute: string;
+    userObjectRoute: string;
+    axiosInstance?: AxiosInstance;
   };
   checkOnInit?: boolean;
 }
@@ -21,8 +22,11 @@ interface State {
 }
 
 class Sanctum extends React.Component<Props, State> {
+  axios: AxiosInstance;
+
   static defaultProps = {
     checkOnInit: true,
+    axiosInstance: axios.create()
   };
 
   constructor(props: Props) {
@@ -32,6 +36,8 @@ class Sanctum extends React.Component<Props, State> {
       user: null,
       authenticated: null,
     };
+
+    this.axios = props.config.axiosInstance || axios.create();
 
     this.signIn = this.signIn.bind(this);
     this.signOut = this.signOut.bind(this);
@@ -45,24 +51,24 @@ class Sanctum extends React.Component<Props, State> {
     remember: boolean = false
   ): Promise<{}> {
     const {
-      api_url,
-      csrf_cookie_route,
-      signin_route,
-      user_object_route,
+      apiUrl,
+      csrfCookieRoute,
+      signInRoute,
+      userObjectRoute,
     } = this.props.config;
 
     return new Promise(async (resolve, reject) => {
       try {
         // Get CSRF cookie.
-        await axios.get(`${api_url}/${csrf_cookie_route}`);
+        await this.axios.get(`${apiUrl}/${csrfCookieRoute}`);
         // Sign in.
-        await axios.post(`${api_url}/${signin_route}`, {
+        await this.axios.post(`${apiUrl}/${signInRoute}`, {
           email,
           password,
           remember: remember ? true : null,
         });
         // When correct, get the user data.
-        const { data } = await axios.get(`${api_url}/${user_object_route}`);
+        const { data } = await this.axios.get(`${apiUrl}/${userObjectRoute}`);
         this.setState({ user: data, authenticated: true });
         return resolve(data);
       } catch (error) {
@@ -72,10 +78,10 @@ class Sanctum extends React.Component<Props, State> {
   }
 
   signOut() {
-    const { api_url, signout_route } = this.props.config;
-    return new Promise(async (resolve, reject) => {
+    const { apiUrl, signOutRoute } = this.props.config;
+    return new Promise<void>(async (resolve, reject) => {
       try {
-        await axios.post(`${api_url}/${signout_route}`);
+        await this.axios.post(`${apiUrl}/${signOutRoute}`);
         // Only sign out after the server has successfully responded.
         this.setState({ user: null, authenticated: false });
         resolve();
@@ -90,12 +96,12 @@ class Sanctum extends React.Component<Props, State> {
   }
 
   checkAuthentication(): Promise<boolean> {
-    const { api_url, user_object_route } = this.props.config;
+    const { apiUrl, userObjectRoute } = this.props.config;
     return new Promise(async (resolve, reject) => {
       if (this.state.authenticated === null) {
         // The status is null if we haven't checked it, so we have to make a request.
         try {
-          const { data } = await axios.get(`${api_url}/${user_object_route}`);
+          const { data } = await this.axios.get(`${apiUrl}/${userObjectRoute}`);
           this.setState({ user: data, authenticated: true });
           return resolve(true);
         } catch (error) {

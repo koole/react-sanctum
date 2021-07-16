@@ -1,5 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+## [2.0.0]
+- ⚠️ Configuration settings have been changed to camelcase.
+- Target build is now ES6, was ES5 previously.
+- Now depends on an axios version higher than 0.21.1
 
 ## [1.0.1] - 2020-4-17
 
