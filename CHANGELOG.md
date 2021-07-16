@@ -2,6 +2,19 @@
 All notable changes to this project will be documented in this file.
 ## [2.0.0]
 - ⚠️ Configuration settings have been changed to camelcase.
+```diff
++   apiUrl: "http://foobar.test",
++   csrfCookieRoute: "sanctum/csrf-cookie",
++   signInRoute: "login",
++   signOutRoute: "logout",
++   userObjectRoute: "user",
+-   api_url: "http://foobar.test",
+-   csrf_cookie_route: "sanctum/csrf-cookie",
+-   signin_route: "logout",
+-   signout_route: "logout",
+-   user_object_route: "user",
+```
+
 - Target build is now ES6, was ES5 previously.
 - Now depends on an axios version higher than 0.21.1
 
