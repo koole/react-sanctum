@@ -12,7 +12,7 @@ const withSanctum = (Component: React.ComponentType<any>) => {
         {(context) => {
           invariant(
             context,
-            `You should not use <${displayName} /> outside a <Sanctum>`
+            `<${displayName} /> should only be used inside <Sanctum />`
           );
           return <Component {...props} {...context} />;
         }}
