@@ -14,6 +14,6 @@ export interface ContextProps {
   checkAuthentication: () => Promise<boolean>;
 }
 
-const SanctumContext = React.createContext<Partial<ContextProps>>({});
+const SanctumContext = React.createContext<ContextProps | undefined>(undefined);
 
 export default SanctumContext;
