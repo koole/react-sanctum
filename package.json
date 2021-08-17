@@ -1,6 +1,6 @@
 {
   "name": "react-sanctum",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Easily hook up your React app to Laravel Sanctum",
   "main": "build/index.cjs.ts",
   "module": "build/index.esm.js",
