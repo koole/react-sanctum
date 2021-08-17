@@ -17,7 +17,7 @@ interface Props {
   checkOnInit?: boolean;
 }
 
-const Sanctum: React.FC<Props> = ({ checkOnInit, config, children }) => {
+const Sanctum: React.FC<Props> = ({ checkOnInit = true, config, children }) => {
   const localAxiosInstance = useMemo(
     () => config.axiosInstance || axios.create(),
     [config.axiosInstance]
