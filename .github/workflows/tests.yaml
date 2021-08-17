@@ -1,0 +1,58 @@
+name: React Sanctum Test
+
+on: [push]
+
+jobs:
+  build:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x.x]
+        php-version: ['8.0']
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Setup backend Laravel
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: 'mbstring'
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Prepare and build package
+        run: |
+          npm install
+          npm run build
+          npm prune --production
+          npm link
+
+      - name: Prepare and run Laravel back-end
+        working-directory: test/dependencies/laravel
+        run: |
+          php -r "file_exists('.env') || copy('.env.example', '.env');"
+          composer update --prefer-stable --prefer-dist --no-interaction
+          chmod -R 777 storage bootstrap/cache
+          touch database/database.sqlite
+          php artisan key:generate
+          php artisan migrate
+          php artisan db:seed
+          php artisan serve &
+
+      - name: Prepare and run React app front-end
+        working-directory: test/dependencies/react-app
+        run: |
+          npm install
+          npm link react-sanctum --save
+          npm start &
+
+      - name: Run tests
+        run: |
+          npm install cypress
+          npm run test

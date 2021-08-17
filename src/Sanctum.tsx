@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import axios, { AxiosInstance } from "axios";
 import SanctumContext from "./SanctumContext";
 
@@ -17,55 +17,37 @@ interface Props {
   checkOnInit?: boolean;
 }
 
-interface State {
-  user: null | {};
-  authenticated: null | boolean;
-}
+const Sanctum: React.FC<Props> = ({ checkOnInit, config, children }) => {
+  const localAxiosInstance = config.axiosInstance || axios.create();
 
-class Sanctum extends React.Component<Props, State> {
-  axios: AxiosInstance;
+  const [currentUser, setCurrentUser] = useState<null | {}>(null);
+  const [authenticated, setAuthenticated] = useState<null | boolean>(null);
 
-  static defaultProps = {
-    checkOnInit: true,
-    axiosInstance: axios.create(),
+  useEffect(() => {
+    if (checkOnInit) {
+      checkAuthentication();
+    }
+  }, [checkOnInit]);
+
+  const csrf = () => {
+    const { apiUrl, csrfCookieRoute } = config;
+    return localAxiosInstance.get(`${apiUrl}/${csrfCookieRoute}`);
   };
 
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      user: null,
-      authenticated: null,
-    };
-
-    this.axios = props.config.axiosInstance || axios.create();
-
-    this.signIn = this.signIn.bind(this);
-    this.twoFactorChallenge = this.twoFactorChallenge.bind(this);
-    this.signOut = this.signOut.bind(this);
-    this.setUser = this.setUser.bind(this);
-    this.checkAuthentication = this.checkAuthentication.bind(this);
-  }
-
-  csrf() {
-    const { apiUrl, csrfCookieRoute } = this.props.config;
-    return this.axios.get(`${apiUrl}/${csrfCookieRoute}`);
-  }
-
-  signIn(
+  const signIn = (
     email: string,
     password: string,
     remember: boolean = false
-  ): Promise<{ twoFactor: boolean; signedIn: boolean; user?: {} }> {
-    const { apiUrl, signInRoute } = this.props.config;
+  ): Promise<{ twoFactor: boolean; signedIn: boolean; user?: {} }> => {
+    const { apiUrl, signInRoute } = config;
 
     return new Promise(async (resolve, reject) => {
       try {
         // Get CSRF cookie.
-        await this.csrf();
+        await csrf();
 
         // Sign in.
-        const { data: signInData } = await this.axios.post(
+        const { data: signInData } = await localAxiosInstance.post(
           `${apiUrl}/${signInRoute}`,
           {
             email,
@@ -83,70 +65,82 @@ class Sanctum extends React.Component<Props, State> {
         }
 
         // Fetch user.
-        const user = await this.revalidate();
+        const user = await revalidate();
 
         return resolve({ twoFactor: false, signedIn: true, user });
       } catch (error) {
         return reject(error);
       }
     });
-  }
+  };
 
-  twoFactorChallenge(code: string, recovery: boolean = false): Promise<{}> {
-    const { apiUrl, twoFactorChallengeRoute } = this.props.config;
+  const twoFactorChallenge = (
+    code: string,
+    recovery: boolean = false
+  ): Promise<{}> => {
+    const { apiUrl, twoFactorChallengeRoute } = config;
 
     return new Promise(async (resolve, reject) => {
       try {
         // The user can either use their OTP token or use a recovery code.
         const formData = recovery ? { recovery_code: code } : { code };
 
-        await this.axios.post(`${apiUrl}/${twoFactorChallengeRoute}`, formData);
+        await localAxiosInstance.post(
+          `${apiUrl}/${twoFactorChallengeRoute}`,
+          formData
+        );
 
         // Fetch user.
-        const user = await this.revalidate();
+        const user = await revalidate();
 
         return resolve(user);
       } catch (error) {
         return reject(error);
       }
     });
-  }
+  };
 
-  signOut() {
-    const { apiUrl, signOutRoute } = this.props.config;
+  const signOut = () => {
+    const { apiUrl, signOutRoute } = config;
 
     return new Promise<void>(async (resolve, reject) => {
       try {
-        await this.axios.post(`${apiUrl}/${signOutRoute}`);
+        await localAxiosInstance.post(`${apiUrl}/${signOutRoute}`);
         // Only sign out after the server has successfully responded.
-        this.setState({ user: null, authenticated: false });
+        setCurrentUser(null);
+        setAuthenticated(false);
         resolve();
       } catch (error) {
         return reject(error);
       }
     });
-  }
+  };
 
-  setUser(user: object, authenticated: boolean = true) {
-    this.setState({ user, authenticated });
-  }
+  const setUser = (user: object, authenticated: boolean = true) => {
+    setCurrentUser(user);
+    setAuthenticated(authenticated);
+  };
 
-  revalidate(): Promise<boolean | { user: {} }> {
+  const revalidate = (): Promise<boolean | { user: {} }> => {
     return new Promise(async (resolve, reject) => {
-      const { apiUrl, userObjectRoute } = this.props.config;
+      const { apiUrl, userObjectRoute } = config;
 
       try {
-        const { data } = await this.axios.get(`${apiUrl}/${userObjectRoute}`, {
-          maxRedirects: 0,
-        });
+        const { data } = await localAxiosInstance.get(
+          `${apiUrl}/${userObjectRoute}`,
+          {
+            maxRedirects: 0,
+          }
+        );
 
-        this.setUser(data);
+        setUser(data);
 
         resolve(data);
       } catch (error) {
         if (error.response && error.response.status === 401) {
           // If there's a 401 error the user is not signed in.
-          this.setState({ user: null, authenticated: false });
+          setCurrentUser(null);
+          setAuthenticated(false);
           return resolve(false);
         } else {
           // If there's any other error, something has gone wrong.
@@ -154,19 +148,20 @@ class Sanctum extends React.Component<Props, State> {
         }
       }
     });
-  }
+  };
 
-  checkAuthentication(): Promise<boolean> {
+  const checkAuthentication = (): Promise<boolean> => {
     return new Promise(async (resolve, reject) => {
-      if (this.state.authenticated === null) {
+      if (authenticated === null) {
         // The status is null if we haven't checked it, so we have to make a request.
         try {
-          await this.revalidate();
+          await revalidate();
           return resolve(true);
         } catch (error) {
           if (error.response && error.response.status === 401) {
             // If there's a 401 error the user is not signed in.
-            this.setState({ user: null, authenticated: false });
+            setCurrentUser(null);
+            setAuthenticated(false);
             return resolve(false);
           } else {
             // If there's any other error, something has gone wrong.
@@ -175,33 +170,25 @@ class Sanctum extends React.Component<Props, State> {
         }
       } else {
         // If it has been checked with the server before, we can just return the state.
-        return resolve(this.state.authenticated);
+        return resolve(authenticated);
       }
     });
-  }
+  };
 
-  componentDidMount() {
-    if (this.props.checkOnInit) {
-      this.checkAuthentication();
-    }
-  }
-
-  render() {
-    return (
-      <SanctumContext.Provider
-        children={this.props.children || null}
-        value={{
-          user: this.state.user,
-          authenticated: this.state.authenticated,
-          signIn: this.signIn,
-          twoFactorChallenge: this.twoFactorChallenge,
-          signOut: this.signOut,
-          setUser: this.setUser,
-          checkAuthentication: this.checkAuthentication,
-        }}
-      />
-    );
-  }
-}
+  return (
+    <SanctumContext.Provider
+      children={children || null}
+      value={{
+        user: currentUser,
+        authenticated: authenticated,
+        signIn: signIn,
+        twoFactorChallenge: twoFactorChallenge,
+        signOut: signOut,
+        setUser: setUser,
+        checkAuthentication: checkAuthentication,
+      }}
+    />
+  );
+};
 
 export default Sanctum;
