@@ -26,6 +26,7 @@ const sanctumConfig = {
     csrfCookieRoute: "sanctum/csrf-cookie",
     signInRoute: "login",
     signOutRoute: "logout",
+    twoFactorChallengeRoute: 'two-factor-challenge',
     userObjectRoute: "user",
 };
 
@@ -72,9 +73,10 @@ data and methods:
 |-|------------------------------------------------------------------------------------|
 | `user` | Object your API returns with user data |
 | `authenticated` | Boolean, or null if authentication has not yet been checked |
-| `signIn()` | Accepts `(email, password, remember?)`, returns a promise, resolves with the user data. |
+| `signIn()` | Accepts `(email, password, remember?)`, returns a promise, resolves with `{twoFactor: boolean, signedIn: boolean, user: {}}`. |
 | `signOut()` | Returns a promise |
 | `setUser()` | Accepts `(user, authenticated?)`, allows you to manually set the user object and optionally its authentication status (boolean). |
+| `twoFactorChallenge()` | Accepts `(code, recovery?)`, returns a promise, resolves with the user object. |
 | `checkAuthentication()` | Returns the authentication status. If it's null, it will ask the server and update `authenticated`. |
 
 # Setup
@@ -83,7 +85,7 @@ All URLS in the config are required. These need to be created in your Laravel ap
 
 ```js
 const sanctumConfig = {
-    // Your applications URL
+    // Your application URL
     apiUrl: "http://foobar.test",
     // The following settings are URLS that need to be created in your Laravel application
     // The URL sanctum uses for the csrf cookie
@@ -95,6 +97,9 @@ const sanctumConfig = {
     // Used (GET) for checking if the user is signed in (so this should be protected)
     // The returned object will be avaiable as `user` in the React components.
     userObjectRoute: "api/user",
+    // The URL where the OTAP token or recovery code will be sent to.
+    // Only needed if you want to use two factor authentication.
+    twoFactorChallengeRoute: 'two-factor-challenge',
     // An axios instance to be used by react-sanctum (optional). Useful if you for example need to add custom interceptors.
     axiosInstance: AxiosInstance,
 };
@@ -133,6 +138,88 @@ axios
     .catch(function (error) {
         ...
     });
+```
+
+# Two factor authentication
+This package supports two factor authentication using Laravel Fortify out of the box.
+
+1. Install Laravel Fortify using the following instructions
+https://laravel.com/docs/8.x/fortify#installation
+
+2. Add the `TwoFactorAuthenticable` trait to the User modal
+https://laravel.com/docs/8.x/fortify#two-factor-authentication
+
+3. Make sure the `two-factor-challenge` route is included in the `config/cors.php` file.
+
+Example for implementation:
+
+```js
+import React, { useState } from "react";
+import { withSanctum, ContextProps } from "react-sanctum";
+
+const Login: React.FC<ContextProps> = ({
+  authenticated,
+  user,
+  signIn,
+  twoFactorChallenge,
+}) => {
+  const [showTwoFactorForm, setShowTwoFactorForm] = useState(false);
+  const [code, setCode] = useState("");
+  const [recoveryCode, setRecoveryCode] = useState("");
+
+  const handleLogin = () => {
+    const email = "sanctum@example.org";
+    const password = "password";
+    const remember = true;
+
+    signIn(email, password, remember)
+      .then(({ twoFactor }) => {
+        if (twoFactor) {
+          setShowTwoFactorForm(true);
+          return;
+        }
+
+        window.alert("Signed in without token!");
+      })
+      .catch(() => window.alert("Incorrect email or password"));
+  };
+
+  const handleTwoFactorChallenge = (recovery: boolean = false) => {
+    twoFactorChallenge(recovery ? recoveryCode : code, recovery)
+      .then(() => window.alert("Signed in with token!"))
+      .catch(() => window.alert("Incorrect token"));
+  };
+
+  if (authenticated === true) {
+    return <h1>Welcome, {user.name}</h1>;
+  } else {
+    if (showTwoFactorForm) {
+      return (
+        <div>
+          <input
+            type="text"
+            onInput={(event) => setCode(event.currentTarget.value)}
+          />
+          <button onClick={() => handleTwoFactorChallenge()}>
+            Sign in using OTAP-token
+          </button>
+          <hr />
+          <input
+            type="text"
+            onInput={(event) => setRecoveryCode(event.currentTarget.value)}
+          />
+          <button onClick={() => handleTwoFactorChallenge(true)}>
+            Sign in using recovery token
+          </button>
+        </div>
+      );
+    }
+
+    return <button onClick={handleLogin}>Sign in</button>;
+  }
+};
+
+export default withSanctum(Login);
 ```
 
 # Axios
