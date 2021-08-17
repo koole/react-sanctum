@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import axios, { AxiosInstance } from "axios";
 import SanctumContext from "./SanctumContext";
 
@@ -18,10 +18,17 @@ interface Props {
 }
 
 const Sanctum: React.FC<Props> = ({ checkOnInit, config, children }) => {
-  const localAxiosInstance = config.axiosInstance || axios.create();
+  const localAxiosInstance = useMemo(
+    () => config.axiosInstance || axios.create(),
+    [config.axiosInstance]
+  );
 
-  const [currentUser, setCurrentUser] = useState<null | {}>(null);
-  const [authenticated, setAuthenticated] = useState<null | boolean>(null);
+  const [sanctumState, setSanctumState] = useState<{
+    user: null | {};
+    authenticated: null | boolean;
+  }>({ user: null, authenticated: null });
+  const user = sanctumState.user;
+  const authenticated = sanctumState.authenticated;
 
   useEffect(() => {
     if (checkOnInit) {
@@ -107,8 +114,7 @@ const Sanctum: React.FC<Props> = ({ checkOnInit, config, children }) => {
       try {
         await localAxiosInstance.post(`${apiUrl}/${signOutRoute}`);
         // Only sign out after the server has successfully responded.
-        setCurrentUser(null);
-        setAuthenticated(false);
+        setSanctumState({ user: null, authenticated: false });
         resolve();
       } catch (error) {
         return reject(error);
@@ -117,8 +123,7 @@ const Sanctum: React.FC<Props> = ({ checkOnInit, config, children }) => {
   };
 
   const setUser = (user: object, authenticated: boolean = true) => {
-    setCurrentUser(user);
-    setAuthenticated(authenticated);
+    setSanctumState({ user, authenticated });
   };
 
   const revalidate = (): Promise<boolean | { user: {} }> => {
@@ -139,8 +144,7 @@ const Sanctum: React.FC<Props> = ({ checkOnInit, config, children }) => {
       } catch (error) {
         if (error.response && error.response.status === 401) {
           // If there's a 401 error the user is not signed in.
-          setCurrentUser(null);
-          setAuthenticated(false);
+          setSanctumState({ user: null, authenticated: false });
           return resolve(false);
         } else {
           // If there's any other error, something has gone wrong.
@@ -160,8 +164,7 @@ const Sanctum: React.FC<Props> = ({ checkOnInit, config, children }) => {
         } catch (error) {
           if (error.response && error.response.status === 401) {
             // If there's a 401 error the user is not signed in.
-            setCurrentUser(null);
-            setAuthenticated(false);
+            setSanctumState({ user: null, authenticated: false });
             return resolve(false);
           } else {
             // If there's any other error, something has gone wrong.
@@ -179,13 +182,13 @@ const Sanctum: React.FC<Props> = ({ checkOnInit, config, children }) => {
     <SanctumContext.Provider
       children={children || null}
       value={{
-        user: currentUser,
-        authenticated: authenticated,
-        signIn: signIn,
-        twoFactorChallenge: twoFactorChallenge,
-        signOut: signOut,
-        setUser: setUser,
-        checkAuthentication: checkAuthentication,
+        user,
+        authenticated,
+        signIn,
+        twoFactorChallenge,
+        signOut,
+        setUser,
+        checkAuthentication,
       }}
     />
   );

@@ -1,5 +1,4 @@
 import * as React from "react";
-import invariant from "tiny-invariant";
 
 import SanctumContext from "./SanctumContext";
 
@@ -10,10 +9,10 @@ const withSanctum = (Component: React.ComponentType<any>) => {
     return (
       <SanctumContext.Consumer>
         {(context) => {
-          invariant(
-            context,
-            `<${displayName} /> should only be used inside <Sanctum />`
-          );
+          if (!context)
+            throw new Error(
+              `<${displayName} /> should only be used inside <Sanctum />`
+            );
           return <Component {...props} {...context} />;
         }}
       </SanctumContext.Consumer>
