@@ -8,7 +8,8 @@
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c -w",
-    "test": "cypress run --record"
+    "test": "cypress run",
+    "test-and-record": "cypress run --record"
   },
   "repository": {
     "type": "git",
