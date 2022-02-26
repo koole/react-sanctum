@@ -38,7 +38,7 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "axios": "^0.25.0"
+    "axios": "^0.26.0"
   },
   "peerDependencies": {
     "react": "^16.13.0 || ^17.0.0",
