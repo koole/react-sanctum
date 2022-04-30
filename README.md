@@ -1,7 +1,7 @@
 <p align="center"><img src="art/logo.svg" alt="Logo Laravel Sanctum"></p>
 <p align="center">
   <a href="https://github.com/koole/react-sanctum/actions/workflows/tests.yaml"><img src="https://github.com/koole/react-sanctum/actions/workflows/tests.yaml/badge.svg" alt="Build Status"></a>
-  <img alt="npm" src="https://img.shields.io/npm/dt/react-sanctum">
+  <img href="https://www.npmjs.com/package/react-sanctum" alt="npm" src="https://img.shields.io/npm/dt/react-sanctum">
   <img alt="npm" src="https://img.shields.io/npm/v/react-sanctum">
   <img alt="npm bundle size" src="https://img.shields.io/bundlephobia/minzip/react-sanctum">
   <img alt="GitHub" src="https://img.shields.io/github/license/koole/react-sanctum">
