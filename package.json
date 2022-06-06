@@ -30,7 +30,7 @@
     "@rollup/plugin-json": "^4.1.0",
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.3",
-    "cypress": "^9.1.0",
+    "cypress": "^10.0.2",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "rollup": "^2.32.1",
