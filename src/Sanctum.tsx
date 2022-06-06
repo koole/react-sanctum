@@ -15,6 +15,7 @@ interface Props {
     axiosInstance?: AxiosInstance;
   };
   checkOnInit?: boolean;
+  children: React.ReactNode;
 }
 
 const Sanctum: React.FC<Props> = ({ checkOnInit = true, config, children }) => {
