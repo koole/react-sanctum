@@ -4,7 +4,7 @@ export interface ContextProps {
   user: null | any;
   authenticated: null | boolean;
   signIn: (
-    email: string,
+    username: string,
     password: string,
     remember?: boolean
   ) => Promise<{ twoFactor: boolean; signedIn: boolean }>;

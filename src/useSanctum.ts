@@ -1,12 +1,15 @@
 import * as React from "react";
 
-import SanctumContext from "./SanctumContext";
+import SanctumContext, { ContextProps } from "./SanctumContext";
 
-const useSanctum = () => {
+interface useSanctumReturn<T> extends ContextProps {
+  user: T;
+}
+
+export default function useSanctum<T = null | any>(): useSanctumReturn<T> {
   const context = React.useContext(SanctumContext);
   if (!context)
     throw new Error("useSanctum should only be used inside <Sanctum />");
   return context;
 };
 
-export default useSanctum;
