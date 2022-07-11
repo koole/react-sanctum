@@ -4,16 +4,19 @@ import SanctumContext from "./SanctumContext";
 
 axios.defaults.withCredentials = true;
 
+export interface ConfigProps {
+  apiUrl: string;
+  csrfCookieRoute: string;
+  signInRoute: string;
+  signOutRoute: string;
+  userObjectRoute: string;
+  twoFactorChallengeRoute?: string;
+  axiosInstance?: AxiosInstance;
+  usernameKey?: string;
+}
+
 interface Props {
-  config: {
-    apiUrl: string;
-    csrfCookieRoute: string;
-    signInRoute: string;
-    signOutRoute: string;
-    userObjectRoute: string;
-    twoFactorChallengeRoute?: string;
-    axiosInstance?: AxiosInstance;
-  };
+  config: ConfigProps
   checkOnInit?: boolean;
   children: React.ReactNode;
 }
@@ -43,11 +46,11 @@ const Sanctum: React.FC<Props> = ({ checkOnInit = true, config, children }) => {
   };
 
   const signIn = (
-    email: string,
+    username: string,
     password: string,
     remember: boolean = false
   ): Promise<{ twoFactor: boolean; signedIn: boolean; user?: {} }> => {
-    const { apiUrl, signInRoute } = config;
+    const { apiUrl, signInRoute, usernameKey } = config;
 
     return new Promise(async (resolve, reject) => {
       try {
@@ -58,7 +61,7 @@ const Sanctum: React.FC<Props> = ({ checkOnInit = true, config, children }) => {
         const { data: signInData } = await localAxiosInstance.post(
           `${apiUrl}/${signInRoute}`,
           {
-            email,
+            [usernameKey || 'email']: username,
             password,
             remember: remember ? true : null,
           },
