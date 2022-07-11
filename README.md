@@ -128,6 +128,8 @@ const sanctumConfig = {
   twoFactorChallengeRoute: "two-factor-challenge",
   // An axios instance to be used by react-sanctum (optional). Useful if you for example need to add custom interceptors.
   axiosInstance: AxiosInstance,
+  // Optional key used for the username POSTed to Laravel, defaults to "email". 
+  usernameKey: "email";
 };
 ```
 
