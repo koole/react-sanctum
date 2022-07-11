@@ -16,7 +16,7 @@ export interface ConfigProps {
 }
 
 interface Props {
-  config: ConfigProps
+  config: ConfigProps;
   checkOnInit?: boolean;
   children: React.ReactNode;
 }
@@ -61,7 +61,7 @@ const Sanctum: React.FC<Props> = ({ checkOnInit = true, config, children }) => {
         const { data: signInData } = await localAxiosInstance.post(
           `${apiUrl}/${signInRoute}`,
           {
-            [usernameKey || 'email']: username,
+            [usernameKey || "email"]: username,
             password,
             remember: remember ? true : null,
           },
@@ -146,12 +146,16 @@ const Sanctum: React.FC<Props> = ({ checkOnInit = true, config, children }) => {
 
         resolve(data);
       } catch (error) {
-        if (error.response && error.response.status === 401) {
-          // If there's a 401 error the user is not signed in.
-          setSanctumState({ user: null, authenticated: false });
-          return resolve(false);
+        if (axios.isAxiosError(error)) {
+          if (error.response && error.response.status === 401) {
+            // If there's a 401 error the user is not signed in.
+            setSanctumState({ user: null, authenticated: false });
+            return resolve(false);
+          } else {
+            // If there's any other error, something has gone wrong.
+            return reject(error);
+          }
         } else {
-          // If there's any other error, something has gone wrong.
           return reject(error);
         }
       }
@@ -166,12 +170,16 @@ const Sanctum: React.FC<Props> = ({ checkOnInit = true, config, children }) => {
           await revalidate();
           return resolve(true);
         } catch (error) {
-          if (error.response && error.response.status === 401) {
-            // If there's a 401 error the user is not signed in.
-            setSanctumState({ user: null, authenticated: false });
-            return resolve(false);
+          if (axios.isAxiosError(error)) {
+            if (error.response && error.response.status === 401) {
+              // If there's a 401 error the user is not signed in.
+              setSanctumState({ user: null, authenticated: false });
+              return resolve(false);
+            } else {
+              // If there's any other error, something has gone wrong.
+              return reject(error);
+            }
           } else {
-            // If there's any other error, something has gone wrong.
             return reject(error);
           }
         }
