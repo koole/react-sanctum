@@ -175,7 +175,7 @@ This package supports two factor authentication using Laravel Fortify out of the
 1.  Install Laravel Fortify using the following instructions
     https://laravel.com/docs/8.x/fortify#installation
 
-2.  Add the `TwoFactorAuthenticable` trait to the User modal
+2.  Add the `TwoFactorAuthenticable` trait to the User model
     https://laravel.com/docs/8.x/fortify#two-factor-authentication
 
 3.  Make sure the `two-factor-challenge` route is included in the `config/cors.php` file.
