@@ -1,5 +1,16 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+
+## [2.2.0]
+- Add `usernameKey` configuration option (#151)
+- Fix incorrect type (#150)
+
+## [2.1.3]
+- Fix signOut promise return type (#122)
+
+## [2.1.0]
+- Removed tiny-invariant dependency
+
 ## [2.0.0]
 - ⚠️ Configuration settings have been changed to camelcase.
 ```diff
