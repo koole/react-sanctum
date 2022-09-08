@@ -11,6 +11,7 @@ jobs:
       matrix:
         node-version: [16.x.x]
         php-version: ['8.0']
+        react-version: ['17', '18']
 
     steps:
       - uses: actions/checkout@v1
@@ -46,7 +47,7 @@ jobs:
           php artisan serve &
 
       - name: Prepare and run React app front-end
-        working-directory: test/dependencies/react-app
+        working-directory: test/dependencies/react-app-${{ matrix.react-version }}
         run: |
           npm install
           npm link react-sanctum --save
