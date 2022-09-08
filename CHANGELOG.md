@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.3.0]
+- Add support for React 18
+
 ## [2.2.0]
 - Add `usernameKey` configuration option (#151)
 - Fix incorrect type (#150)
