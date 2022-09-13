@@ -131,9 +131,9 @@ const Sanctum: React.FC<Props> = ({ checkOnInit = true, config, children }) => {
   };
 
   const revalidate = (): Promise<boolean | { user: {} }> => {
+    const { apiUrl, userObjectRoute } = config;
+    
     return new Promise(async (resolve, reject) => {
-      const { apiUrl, userObjectRoute } = config;
-
       try {
         const { data } = await localAxiosInstance.get(
           `${apiUrl}/${userObjectRoute}`,
