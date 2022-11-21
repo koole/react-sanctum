@@ -138,7 +138,7 @@ component gets mounted. If you don't want this, and want to manually use the
 `checkAuthentication` function later, set `checkOnInit` to `false` like so:
 
 ```js
-<Sanctum config={sanctumConfig} checkOnInit={true}>
+<Sanctum config={sanctumConfig} checkOnInit={false}>
 ```
 
 # Handling registration
