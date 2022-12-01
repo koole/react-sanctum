@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/koole/react-sanctum#readme",
   "devDependencies": {
-    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-json": "^5.0.2",
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.3",
     "cypress": "^11.2.0",
