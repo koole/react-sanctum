@@ -5,6 +5,7 @@
   "main": "build/index.cjs.ts",
   "module": "build/index.esm.js",
   "types": "build/index.d.ts",
+  "type": "module",
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c -w",
