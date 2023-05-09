@@ -24,7 +24,7 @@ Install from NPM
 npm i react-sanctum
 ```
 
-Wrap your application in an `<Sanctum>` component
+Wrap your application in a `<Sanctum>` component
 
 ### Example
 
