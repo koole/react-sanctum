@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.0.0]
+- Require new major version of axios (^1.1.3, previously ^0.27.2)
+
 ## [2.3.0]
 - Add support for React 18
 
