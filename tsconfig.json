@@ -10,7 +10,6 @@
     "declaration": true,
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
-    "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "esModuleInterop": true,
