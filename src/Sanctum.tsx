@@ -67,6 +67,7 @@ const Sanctum: React.FC<Props> = ({ checkOnInit = true, config, children }) => {
           },
           {
             maxRedirects: 0,
+            withCredentials: true,
           }
         );
 
@@ -98,7 +99,10 @@ const Sanctum: React.FC<Props> = ({ checkOnInit = true, config, children }) => {
 
         await localAxiosInstance.post(
           `${apiUrl}/${twoFactorChallengeRoute}`,
-          formData
+          formData,
+          {
+            withCredentials: true,
+          }
         );
 
         // Fetch user.
@@ -116,7 +120,9 @@ const Sanctum: React.FC<Props> = ({ checkOnInit = true, config, children }) => {
 
     return new Promise<void>(async (resolve, reject) => {
       try {
-        await localAxiosInstance.post(`${apiUrl}/${signOutRoute}`);
+        await localAxiosInstance.post(`${apiUrl}/${signOutRoute}`, null, {
+          withCredentials: true,
+        });
         // Only sign out after the server has successfully responded.
         setSanctumState({ user: null, authenticated: false });
         resolve();
@@ -132,7 +138,7 @@ const Sanctum: React.FC<Props> = ({ checkOnInit = true, config, children }) => {
 
   const revalidate = (): Promise<boolean | { user: {} }> => {
     const { apiUrl, userObjectRoute } = config;
-    
+
     return new Promise(async (resolve, reject) => {
       try {
         const { data } = await localAxiosInstance.get(
