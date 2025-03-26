@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import axios from "axios";
 import { Sanctum } from "react-sanctum";
 import App from "./App";
@@ -17,11 +17,14 @@ const sanctumConfig = {
   axiosInstance: axiosInstance
 };
 
-ReactDOM.render(
+// Create a root first
+const root = createRoot(document.getElementById("root"));
+
+// Then render your app to that root
+root.render(
   <React.StrictMode>
     <Sanctum config={sanctumConfig}>
       <App apiUrl={apiUrl} />
     </Sanctum>
-  </React.StrictMode>,
-  document.getElementById("root")
+  </React.StrictMode>
 );
