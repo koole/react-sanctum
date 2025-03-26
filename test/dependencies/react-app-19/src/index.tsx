@@ -18,7 +18,7 @@ const sanctumConfig = {
 };
 
 // Create a root first
-const root = createRoot(document.getElementById("root"));
+const root = createRoot(document.getElementById("root") as HTMLElement);
 
 // Then render your app to that root
 root.render(
